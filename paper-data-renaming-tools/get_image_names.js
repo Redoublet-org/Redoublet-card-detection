@@ -1,4 +1,4 @@
-const FOLDER_PATH = "C:\\Users\\thoma\\Desktop\\darknet\\build\\darknet\\x64\\data\\obj"
+const FOLDER_PATH = "C:/Users/Desktop/Desktop/Redoublet-card-detection/data/paper-test"
 let fs = require('fs');
 let path = require('path')
 
@@ -10,11 +10,11 @@ fs.readdir(FOLDER_PATH, (err, files) => {
         // Skip all non-jpg files
         if (!filename.endsWith(".jpg")) continue;
         
-        names += `data/obj/${filename}\n`
+        names += `build/darknet/x64/data/obj/${filename}\n`
         
     }
 
-    fs.writeFile(path.resolve("./train.txt"), names, file_write_err => {
+    fs.writeFile(path.resolve("./test.txt"), names, file_write_err => {
         if (file_write_err) {
           console.error(file_write_err);
         }

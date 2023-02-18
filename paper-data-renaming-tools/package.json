@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "graceful-fs": "^4.2.10",
     "xml2json": "^0.12.0"
   }
 }
