@@ -9,11 +9,11 @@ namespace object_detection_backend
     /// <summary>
     /// Represents a singular detected card
     /// </summary>
-    internal class Detection
+    public class Detection
     {
-        internal Card Card;
-        internal BoundingBox BoundingBox;
-        internal double Confidence; 
+        public Card Card { get; }
+        public BoundingBox BoundingBox { get; }
+        public double Confidence { get; }
 
         public Detection(string s)
         {
@@ -35,12 +35,12 @@ namespace object_detection_backend
         }
     }
 
-    internal class BoundingBox
+    public class BoundingBox
     {
-        internal int LeftX { get; }
-        internal int TopY { get; }
-        internal int Width { get; }
-        internal int Height { get; }
+        public int LeftX { get; }
+        public int TopY { get; }
+        public int Width { get; }
+        public int Height { get; }
 
         /// <summary>
         /// Takes string of form "left_x: xxx top_y: xxx width: xxx height: xxx"

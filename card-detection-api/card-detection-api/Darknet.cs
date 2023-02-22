@@ -1,23 +1,25 @@
-﻿using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics.Metrics;
+﻿using object_detection_backend;
+using System.Diagnostics;
+using System.Drawing;
 
-namespace object_detection_backend
-{
-    internal class Program
+namespace card_detection_api
+{ 
+    public class Darknet
     {
-        static void Main(string[] args)
+        public static Process process;
+
+        public static void Initialize()
         {
             string darknet_folder_path = "C:\\Users\\thoma\\Desktop\\darknet";
             string relative_executable = "darknet.exe";
-            string relative_data       = "build\\darknet\\x64\\data\\obj.data";
-            string relative_config     = "cfg\\yolov4-obj.cfg";
-            string relative_weights    = "backup\\yolov4-obj_9000.weights";
+            string relative_data = "build\\darknet\\x64\\data\\obj.data";
+            string relative_config = "cfg\\yolov4-obj.cfg";
+            string relative_weights = "backup\\yolov4-obj_9000.weights";
 
             string executable_path = Path.Combine(darknet_folder_path, relative_executable);
-            string data_path       = Path.Combine(darknet_folder_path, relative_data);
-            string config_path     = Path.Combine(darknet_folder_path, relative_config);
-            string weights_path    = Path.Combine(darknet_folder_path, relative_weights);
+            string data_path = Path.Combine(darknet_folder_path, relative_data);
+            string config_path = Path.Combine(darknet_folder_path, relative_config);
+            string weights_path = Path.Combine(darknet_folder_path, relative_weights);
 
             string[] arguments = new string[]
             {
@@ -34,30 +36,26 @@ namespace object_detection_backend
             startInfo.RedirectStandardInput = true;
             startInfo.RedirectStandardOutput = true;
 
-            var proc = Process.Start(startInfo);
+            process = Process.Start(startInfo);
 
             Queue<string> images = new Queue<string>();
             images.Enqueue("C:\\Users\\thoma\\Desktop\\AcetoFive.JPG");
             images.Enqueue("C:\\Users\\thoma\\Desktop\\Skatblatt_02.jpg");
             images.Enqueue("C:\\Users\\thoma\\Desktop\\AcetoFive.JPG");
 
-            AwaitInputState(proc);
-            while (images.Count > 0)
-            {
-                ProcessNextImage(proc, images);
-            }
+            AwaitInputState();
         }
-        
+
         /// <summary>
         /// Awaits darknet startup untill images can be entered
         /// </summary>
         /// <param name="proc">The running darknet process</param>
-        static void AwaitInputState(Process proc)
+        public static void AwaitInputState()
         {
             string outp = "";
-            while (!proc.HasExited)
+            while (!process.HasExited)
             {
-                int x = proc.StandardOutput.Read();
+                int x = process.StandardOutput.Read();
                 //int c = proc.StandardError.Read();
                 //Console.Write(((char)c).ToString());
 
@@ -87,15 +85,13 @@ namespace object_detection_backend
         /// <param name="proc">The process containing the running darknet application</param>
         /// <param name="images">Queue of images to work through</param>
         /// <returns>True if the next image was analysed. False if no more images were available.s</returns>
-        static bool ProcessNextImage(Process proc, Queue<string> images)
+        public static DetectionResult ProcessImage(string img)
         {
-            if (images.Count == 0) return false;
+            if (process == null) throw new InvalidOperationException("Darknet process is not yet running. Did you initialize?");
 
-            string img = images.Dequeue();
-
-            proc.StandardInput.WriteLine(img);
-            proc.StandardInput.Flush();
-            proc.StandardOutput.DiscardBufferedData();
+            process.StandardInput.WriteLine(img);
+            process.StandardInput.Flush();
+            process.StandardOutput.DiscardBufferedData();
 
             string line = "";
 
@@ -104,11 +100,11 @@ namespace object_detection_backend
 
             while (true)
             {
-                char f = (char)proc.StandardOutput.Read();
+                char f = (char)process.StandardOutput.Read();
                 line += f;
                 if (line == "Enter Image Path: ")
                 {
-                    return true;
+                    return detectionResult;
                 }
 
                 if (line.EndsWith("\n"))

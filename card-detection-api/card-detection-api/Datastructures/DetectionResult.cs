@@ -1,10 +1,10 @@
 ﻿namespace object_detection_backend
 {
-    internal class DetectionResult
+    public class DetectionResult
     {
-        public List<Detection> Detections;
-        public double Milliseconds;
-        public string FileName;
+        public List<Detection> Detections { get; }
+        public double Milliseconds { get; set; }
+        public string FileName { get; set; }
 
         public DetectionResult()
         {
