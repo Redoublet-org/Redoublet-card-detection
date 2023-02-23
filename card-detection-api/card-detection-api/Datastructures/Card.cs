@@ -84,7 +84,7 @@ namespace object_detection_backend
                             if (val < 2 || val > 10) throw new ArgumentException("Value was outside expected range");
                             return (Value)val;
                         }
-                        catch (Exception e) { throw; }
+                        catch (Exception e) { throw new ArgumentException("Value was not in expected format"); }
                     }
             }
         }
