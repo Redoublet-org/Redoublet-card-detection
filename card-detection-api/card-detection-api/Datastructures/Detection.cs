@@ -50,11 +50,19 @@ namespace object_detection_backend
         {
             string[] args = s.Split(new string[] { " ", "\t" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
             int start = Array.IndexOf(args, "(left_x:");
-            LeftX  = int.Parse(args[start + 1]);
-            TopY   = int.Parse(args[start + 3]);
-            Width  = int.Parse(args[start + 5]);
-            Height = int.Parse(args[start + 7].TrimEnd(new char[] {')', '\r', '\n'}));
-            Console.WriteLine();
+            if (start == -1) throw new ArgumentException("Input did not contain '(left_x:'. Could not parse bounding box.");
+            if (start + 7 >= args.Length) throw new ArgumentException("Input does not contain enough fields to parse bounding box");
+
+            try
+            {
+                LeftX  = int.Parse(args[start + 1]);
+                TopY   = int.Parse(args[start + 3]);
+                Width  = int.Parse(args[start + 5]);
+                Height = int.Parse(args[start + 7].TrimEnd(new char[] {')', '\r', '\n'}));
+            }
+            catch {
+                throw new ArgumentException("Bounding box dimensions were not in integer format.");
+            }
         }
 
         public BoundingBox(int leftX, int topY, int width, int height)

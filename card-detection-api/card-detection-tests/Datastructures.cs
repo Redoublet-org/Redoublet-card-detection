@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.ObjectPool;
-using Microsoft.Extensions.Primitives;
-using object_detection_backend;
+﻿using object_detection_backend;
+using System.Windows.Markup;
 
 namespace card_detection_tests
 {
@@ -66,6 +65,62 @@ namespace card_detection_tests
 
                 return combinations;
             }
+        }
+    }
+
+    public class DetectionTests
+    {
+        [Theory]
+        [InlineData("As: 99% (left_x:  179   top_y:  172   width:   65   height:  101)", 0.99)]
+        [InlineData("2d: 90% (left_x:  269   top_y:  121   width:   45   height:  104)", 0.90)]
+        [InlineData("3s: 99% (left_x:  365   top_y:   94   width:   43   height:  111)", 0.99)]
+        [InlineData("5c: 84% (left_x:  408   top_y:  424   width:   60   height:   90)", 0.84)]
+        [InlineData("4h: 82% (left_x:  450   top_y:   90   width:   39   height:   98)", 0.82)]
+        public void ParseConfidenceFromLines(string line, double confidence)
+        {
+            Detection detection = new Detection(line);
+
+            Assert.Equal(detection.Confidence, confidence);
+        }
+
+        [Theory]
+        [InlineData("As: 99% (left_x:  179   top_y:  172   width:   65   height:  101)", 179, 172, 65, 101)]
+        [InlineData("2d: 90% (left_x:  269   top_y:  121   width:   45   height:  104)", 269, 121, 45, 104)]
+        [InlineData("3s: 99% (left_x:  365   top_y:   94   width:   43   height:  111)", 365, 94, 43, 111)]
+        [InlineData("5c: 84% (left_x:  408   top_y:  424   width:   60   height:   90)", 408, 424, 60, 90)]
+        [InlineData("4h: 82% (left_x:  450   top_y:   90   width:   39   height:   98)", 450, 90, 39, 98)]
+        public void ParseBoundingBoxFromLines(string line, int x, int y, int w, int h)
+        {
+            BoundingBox boundingBox = new BoundingBox(line);
+
+            Assert.Equal(boundingBox.LeftX, x);
+            Assert.Equal(boundingBox.TopY, y);
+            Assert.Equal(boundingBox.Width, w);
+            Assert.Equal(boundingBox.Height, h);
+        }
+
+        [Fact]
+        public void ParseBoundingBoxNoStart()
+        {
+            string line = "As: 99% (l 179   top_y:  172   width:   65   height:  101)";
+
+            Assert.Throws<ArgumentException>(() => new BoundingBox(line));
+        }
+
+        [Fact]
+        public void ParseBoundingBoxIncorrectNumDim()
+        {
+            string line = "As: 99% (l 179   top_y:  172";
+
+            Assert.Throws<ArgumentException>(() => new BoundingBox(line));
+        }
+
+        [Fact]
+        public void ParseBoundingBoxIncorrectDimFormat()
+        {
+            string line = "4h: 82% (left_x:  s50   top_y:   9d0   width:   f39   height:   9s)";
+
+            Assert.Throws<ArgumentException>(() => new BoundingBox(line));
         }
     }
 }
