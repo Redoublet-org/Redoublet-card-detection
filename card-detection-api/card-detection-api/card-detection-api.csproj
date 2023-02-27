@@ -16,4 +16,10 @@
     <Folder Include="Datastructures\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="darknetconfig.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

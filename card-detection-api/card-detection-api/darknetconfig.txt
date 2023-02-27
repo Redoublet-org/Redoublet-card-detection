@@ -1,0 +1,4 @@
+C:\Users\thoma\Desktop\darknet\darknet.exe
+C:\Users\thoma\Desktop\darknet\build\darknet\x64\data\obj.data
+C:\Users\thoma\Desktop\darknet\cfg\yolov4-obj.cfg
+C:\Users\thoma\Desktop\darknet\backup\yolov4-obj_9000.weights

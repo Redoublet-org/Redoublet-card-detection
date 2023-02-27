@@ -10,16 +10,11 @@ namespace card_detection_api
 
         public static void Initialize()
         {
-            string darknet_folder_path = "C:\\Users\\thoma\\Desktop\\darknet";
-            string relative_executable = "darknet.exe";
-            string relative_data = "build\\darknet\\x64\\data\\obj.data";
-            string relative_config = "cfg\\yolov4-obj.cfg";
-            string relative_weights = "backup\\yolov4-obj_9000.weights";
-
-            string executable_path = Path.Combine(darknet_folder_path, relative_executable);
-            string data_path = Path.Combine(darknet_folder_path, relative_data);
-            string config_path = Path.Combine(darknet_folder_path, relative_config);
-            string weights_path = Path.Combine(darknet_folder_path, relative_weights);
+            string[] configLines = File.ReadAllLines(Path.GetFullPath("./darknetconfig.txt"));
+            string darknet_path = configLines[0];
+            string data_path    = configLines[1];
+            string config_path  = configLines[2];
+            string weights_path  = configLines[3];
 
             string[] arguments = new string[]
             {
@@ -29,19 +24,15 @@ namespace card_detection_api
                 "-ext_output" // Extra informatie over hitboxes
             };
 
+
             ProcessStartInfo startInfo = new();
             startInfo.Arguments = String.Join(" ", arguments);
-            startInfo.WorkingDirectory = darknet_folder_path;
-            startInfo.FileName = executable_path;
+            // startInfo.WorkingDirectory = darknet_folder_path;
+            startInfo.FileName = darknet_path;
             startInfo.RedirectStandardInput = true;
             startInfo.RedirectStandardOutput = true;
 
             process = Process.Start(startInfo);
-
-            Queue<string> images = new Queue<string>();
-            images.Enqueue("C:\\Users\\thoma\\Desktop\\AcetoFive.JPG");
-            images.Enqueue("C:\\Users\\thoma\\Desktop\\Skatblatt_02.jpg");
-            images.Enqueue("C:\\Users\\thoma\\Desktop\\AcetoFive.JPG");
 
             AwaitInputState();
         }
