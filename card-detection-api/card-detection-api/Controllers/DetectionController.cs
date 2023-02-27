@@ -1,10 +1,6 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using object_detection_backend;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Text.Json.Nodes;
-using static System.Net.Mime.MediaTypeNames;
+using SixLabors.ImageSharp;
 
 namespace card_detection_api.Controllers
 {
@@ -27,7 +23,7 @@ namespace card_detection_api.Controllers
             
             using (MemoryStream streamBitmap = new MemoryStream(image))
             {
-                System.Drawing.Image.FromStream(streamBitmap).Save(imgname, ImageFormat.Png);
+                Image.Load(image).SaveAsPng(imgname);
             }
 
             var dr = Darknet.ProcessImage(Path.GetFullPath(imgname));
