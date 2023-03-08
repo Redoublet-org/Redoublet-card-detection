@@ -1,4 +1,4 @@
-﻿namespace object_detection_backend
+﻿namespace Redoublet.Backend.Models
 {
     public class DetectionResult
     {

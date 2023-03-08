@@ -1,11 +1,12 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using object_detection_backend;
+using Redoublet.Backend.Models;
 using SixLabors.ImageSharp;
 
-namespace card_detection_api.Controllers
+namespace Redoublet.Backend.Controllers
 {
     [ApiController]
-    [Route("detect-cards")]
+    [Route("api")]
     public class DetectionController : ControllerBase
     {
         private readonly ILogger<DetectionController> _logger;
@@ -16,6 +17,7 @@ namespace card_detection_api.Controllers
         }
 
         [HttpPost]
+        [Route("detect-card")]
         public DetectionResult Post([FromBody] string jemoeder)
         {
             byte[] image = Convert.FromBase64String(jemoeder);

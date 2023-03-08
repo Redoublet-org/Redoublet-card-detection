@@ -1,8 +1,7 @@
-﻿using object_detection_backend;
+﻿using Redoublet.Backend.Models;
 using System.Diagnostics;
-using System.Drawing;
 
-namespace card_detection_api
+namespace Redoublet.Backend
 { 
     public class Darknet
     {
