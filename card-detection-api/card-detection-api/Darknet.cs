@@ -26,7 +26,7 @@ namespace Redoublet.Backend
 
             ProcessStartInfo startInfo = new();
             startInfo.Arguments = String.Join(" ", arguments);
-            // startInfo.WorkingDirectory = darknet_folder_path;
+
             startInfo.FileName = darknet_path;
             startInfo.RedirectStandardInput = true;
             startInfo.RedirectStandardOutput = true;
