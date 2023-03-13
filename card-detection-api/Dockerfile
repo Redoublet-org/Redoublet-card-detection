@@ -49,7 +49,4 @@ COPY --from=publish /app/publish .
 RUN rm darknetconfig.txt && touch darknetconfig.txt \
     && echo 'darknet' > darknetconfig.txt && echo '/yolov4.data' >> darknetconfig.txt \
     && echo '/yolov4.cfg' >> darknetconfig.txt && echo '/yolov4.weights' >> darknetconfig.txt
-# # ENV DOTNET_ROOT '$HOME/.dotnet'
-# # ENV PATH '$PATH:$HOME/.dotnet:$HOME/.dotnet/tools'
-# # RUN echo 'export DOTNET_ROOT=$HOME/.dotnet' >> ~/.bashrc && echo 'export PATH=$PATH:$HOME/.dotnet:$HOME/.dotnet/tools' >> ~/.bashrc && . ~/.bashrc
 ENTRYPOINT ["dotnet", "card-detection-api.dll"]

@@ -1,4 +1,4 @@
-﻿using object_detection_backend;
+﻿using Redoublet.Backend.Models;
 using System.Windows.Markup;
 
 namespace card_detection_tests

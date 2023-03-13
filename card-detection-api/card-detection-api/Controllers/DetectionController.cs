@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Redoublet.Backend.Models;
-using SixLabors.ImageSharp;
 
 namespace Redoublet.Backend.Controllers
 {
@@ -18,17 +16,17 @@ namespace Redoublet.Backend.Controllers
 
         [HttpPost]
         [Route("detect-card")]
-        public DetectionResult Post([FromBody] string jemoeder)
+        public DetectionResult Post([FromBody] string base64EncodedImage)
         {
-            byte[] image = Convert.FromBase64String(jemoeder);
-            string imgname = "temp.png";
+            byte[] image = Convert.FromBase64String(base64EncodedImage);
+            string imgName = "temp.png";
             
             using (MemoryStream streamBitmap = new MemoryStream(image))
             {
-                Image.Load(image).SaveAsPng(imgname);
+                Image.Load(image).SaveAsPng(imgName);
             }
 
-            var dr = Darknet.ProcessImage(Path.GetFullPath(imgname));
+            var dr = Darknet.ProcessImage(Path.GetFullPath(imgName));
             return dr;
         }
     }

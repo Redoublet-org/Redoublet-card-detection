@@ -46,8 +46,6 @@ namespace Redoublet.Backend
             while (!process.HasExited)
             {
                 int x = process.StandardOutput.Read();
-                //int c = proc.StandardError.Read();
-                //Console.Write(((char)c).ToString());
 
                 if (outp.EndsWith("\n") || outp.EndsWith(":"))
                 {
@@ -68,13 +66,12 @@ namespace Redoublet.Backend
         }
 
         /// <summary>
-        /// Processes the next image in the Queue. Should only be called if the process is in an
+        /// Processes the image given by the file path. Should only be called if the process is in an
         /// input accepting state. Waiting untill this function returns true will ensure that process is in the 
         /// correct state.
         /// </summary>
-        /// <param name="proc">The process containing the running darknet application</param>
-        /// <param name="images">Queue of images to work through</param>
-        /// <returns>True if the next image was analysed. False if no more images were available.s</returns>
+        /// <param name="img">File path to image</param>
+        /// <returns>DetectionResult of the given image</returns>
         public static DetectionResult ProcessImage(string img)
         {
             if (process == null) throw new InvalidOperationException("Darknet process is not yet running. Did you initialize?");
